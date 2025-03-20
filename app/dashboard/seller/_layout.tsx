@@ -23,16 +23,6 @@ export default function BuyerDashboardLayout() {
           }}
         />
         <Tab.Screen
-          name="listings"
-          component={ListingsScreen}
-          options={{
-            tabBarLabel: "Listings",
-            tabBarIcon: ({ color, size }) => (
-              <FontAwesome5 name="shopping-bag" size={size} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
           name="biddings"
           component={BiddingScreen}
           options={{

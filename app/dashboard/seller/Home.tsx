@@ -1,10 +1,14 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import * as React from "react";
-import { Avatar, Card, Title } from "react-native-paper";
+import { Avatar, Card, Title, } from "react-native-paper";
 import { AntDesign, FontAwesome5, FontAwesome6, Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import { useRouter } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
 
 export default function HomeScreen() {
+  const router = useRouter()
+  const {signOut} = useAuth()
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -13,21 +17,11 @@ export default function HomeScreen() {
         <View style={styles.top}>
           <View style={styles.avatarContainer}>
             <Avatar.Image size={50} source={require("@/assets/images/me.jpg")} />
-            <TouchableOpacity style={styles.logoutButton}>
-              <FontAwesome6 name="door-open" size={30} color="#fff" />
-            </TouchableOpacity>
+            <Text style={styles.avatarText}>Seller</Text>
           </View>
 
           <Text style={styles.text1}>Welcome Back,</Text>
           <Text style={styles.text2}>ijforkuo</Text>
-        </View>
-
-        {/* Floating Section */}
-        <View style={styles.float}>
-          <Text style={styles.floatText}>Quick Notifications</Text>
-          <Text style={styles.floatText}>Upcoming Bids</Text>
-          <Text style={styles.floatText}>New Messages</Text>
-          <Text style={styles.floatText}>Updates</Text>
         </View>
 
         {/* Footer Section */}
@@ -39,21 +33,21 @@ export default function HomeScreen() {
             <View style={styles.leftCards}>
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                  <Ionicons name="cloud-upload" size={24} color="black" />
+                  <Ionicons name="cloud-upload" size={24} color="#2196f3" />
                   <Title style={styles.cardText}>Upload Image</Title>
                 </View>
               </Card>
 
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <Ionicons name="add-circle" size={24} color="black" />
+                <Ionicons name="add-circle" size={24} color="#2196f3" />
                   <Title style={styles.cardText}>Create Listings</Title>
                 </View>
               </Card>
 
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <Ionicons name="list-circle" size={24} color="black" />
+                <Ionicons name="list-circle" size={24} color="#2196f3" />
                   <Title style={styles.cardText}>Edit Listings</Title>
                 </View>
               </Card>
@@ -62,22 +56,22 @@ export default function HomeScreen() {
             <View style={styles.rightCards}>
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <FontAwesome5 name="users" size={24} color="black" />
-                  <Title style={styles.cardText}>Followwers</Title>
+                <FontAwesome5 name="users" size={24} color="#2196f3" />
+                  <Title style={styles.cardText}>Followers</Title>
                 </View>
               </Card>
 
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <Octicons name="feed-heart" size={24} color="black" />
+                <Octicons name="feed-heart" size={24} color="#2196f3" />
                   <Title style={styles.cardText}>View Requests</Title>
                 </View>
               </Card>
 
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <Ionicons name="wallet" size={24} color="black" />
-                  <Title style={styles.cardText}>WIdthdrawal</Title>
+                <Ionicons name="wallet" size={24} color="#2196f3" />
+                  <Title style={styles.cardText}>Withdrawal</Title>
                 </View>
               </Card>
             </View>
@@ -88,22 +82,28 @@ export default function HomeScreen() {
             <Card style={styles.card}>
                 <View style={styles.cardContent2}>
                     <View style={styles.left}>
-                    <MaterialCommunityIcons name="hand-heart" size={24} color="black" />
-                    <Title style={styles.cardText}>Invite a friend</Title>
+                    <MaterialCommunityIcons style={styles.Icon1} name="hand-heart" size={24} color="#fbb02d" />
+                      <View style={{flexDirection: "column"}}>
+                        <Title style={styles.cardText}>Invite friends</Title>
+                        <Text style={styles.cardText2}>Sign up a friend</Text>
+                      </View>
                     </View>
 
-                    <AntDesign name="right" size={24} color="black" />
+                    <AntDesign name="right" size={24} color="#999" />
                 </View>
             </Card>
 
             <Card style={styles.card}>
                 <View style={styles.cardContent2}>
-                <View style={styles.left}>
-                    <Ionicons name="chatbubble-ellipses" size={24} color="black" />
-                    <Title style={styles.cardText}>DomiChat</Title>
+                  <View style={styles.left}>
+                    <Ionicons style={styles.Icon2} name="chatbubble-ellipses" size={24} color="#0077b6" />
+                    <View style={{flexDirection: "column"}}>
+                      <Title style={styles.cardText}>DomiChat</Title>
+                      <Text style={styles.cardText2}>Chat with our AI Assistant</Text>
                     </View>
+                  </View>
 
-                    <AntDesign name="right" size={24} color="black" />
+                    <AntDesign name="right" size={24} color="#999" />
                 </View>
             </Card>
         </View>
@@ -127,10 +127,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  logoutButton: {
-    backgroundColor: "#FF4C4C",
+  avatarText: {
+    color: "#fff",
     padding: 10,
-    borderRadius: 50,
+    fontSize: 24,
+    fontWeight: "bold"
   },
   text1: {
     fontSize: 18,
@@ -164,14 +165,18 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 1,
-    marginTop: 80,
     backgroundColor: "white",
     padding: 20,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    position: "absolute",
+    top: 250,
+    width: "100%",
   },
   footerTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
     color: "#4579EE"
   },
   cardContainer: {
@@ -207,12 +212,31 @@ const styles = StyleSheet.create({
   cardContent2:{
     flexDirection: "row",
     alignItems: "center",
-    padding: 15,
+    padding: 12,
     justifyContent:"space-between"
   },
   left: {
     flexDirection: "row",
+    alignContent: "center",
     alignItems: "center",
     gap: 12
+  },
+  Icon1:{
+    backgroundColor: "#faf0ca",
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 20
+  },
+  Icon2: {
+    
+    backgroundColor: "#caf0f8",
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 20
+  },
+  cardText2: {
+    fontSize: 12,
+    color: "#333",
+    alignItems: "center"
   }
 });

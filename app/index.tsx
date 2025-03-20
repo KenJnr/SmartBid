@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ExpoStatusBar style="auto" />
+      {/* <ExpoStatusBar style="auto" /> */}
       <Text>Redirecting...</Text>
     </View>
   );

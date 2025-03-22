@@ -10,7 +10,7 @@ export default function Forgetpassword(){
     const [email, setEmail] = useState("")
     return(
         <View style={styles.container}>
-            <ExpoStatusBar style="dark" />
+            <ExpoStatusBar style="auto" />
 
             <TouchableOpacity style={styles.backIcon} onPress={() => router.back()}>
                 <Ionicons name="chevron-back" size={24} color="#333" />
@@ -48,13 +48,13 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
         padding: 16,  
-        backgroundColor: "#fff"
+        backgroundColor: "#103957"
     },
     backIcon:{
         marginTop: 20,
         alignSelf: "flex-start",
         marginBottom: 24,
-        backgroundColor: "#ddd",
+        backgroundColor: "#8d99ae",
         paddingHorizontal: 10,
         paddingVertical:10,
         borderRadius: 12
@@ -65,18 +65,19 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontFamily: "Poppins",
         marginBottom: 100,
+        color: "#fff"
     },
     intro:{
         fontSize: 16,
         lineHeight: 20,
-        color: "#333",
+        color: "#D1E8FF",
         marginBottom: 20
     },
     label: {
         alignSelf: "flex-start",
         fontSize: 16,
         fontWeight: "bold",
-        color: "#333",
+        color: "#fff",
         paddingBottom: 5
     },
     textField: {
@@ -86,10 +87,10 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         padding: 16,
         marginBottom: 60,
-        backgroundColor: "#fafaff"
+        backgroundColor: "#d0cfcf"
     },
     button: {
-        backgroundColor: "#4579EE",
+        backgroundColor: "#ff7d00",
         paddingVertical: 16,
         paddingHorizontal: 24,
         borderRadius: 30,

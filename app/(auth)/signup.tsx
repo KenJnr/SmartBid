@@ -86,7 +86,7 @@ export default function AuthScreen() {
   return (
     <ScrollView style={styles.scroll}>
     <View style={styles.container}>
-    <ExpoStatusBar style="dark" />
+    <ExpoStatusBar style="auto" />
       {!pendingVerification ? (
         <>
 
@@ -173,7 +173,7 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
   scroll:{
     flexGrow: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#103957"
   },
   container:{
     flex: 1,
@@ -185,21 +185,21 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: "Poppins",
     fontWeight: "bold",
-    color: "",
+    color: "#fff",
     marginBottom: 12
   },
   subtitle: {
     fontSize: 16,
     fontFamily: "Poppins",
     textAlign: "center",
-    color: "#666",
+    color: "#D1E8FF",
     marginBottom: 40
   },
   label:{
     fontSize: 16,
     fontFamily: "Poppins",
     fontWeight: "bold",
-    color: "#333",
+    color: "#fff",
     alignSelf: "flex-start",
     paddingBottom: 5
   },
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     marginBottom: 16,
-    backgroundColor: "#fafaff"
+    backgroundColor: "#d0cfcf"
   },
   roleText: {
     width:"100%",
@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
+    color: "#fff"
   },
   cardContainer:{
     flexDirection: "row",
@@ -240,9 +241,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   card:{
-    backgroundColor: "white",
-    borderColor: "#E5E7EB",
-    borderWidth: 1,
+    backgroundColor: "#1B4B66",
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderRadius: 12,
@@ -261,12 +260,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
     textAlign: "center",
+    color: "#fff"
   },
   cardText:{
     fontFamily: "Poppins",
     textAlign: "center",
     fontSize: 14,
-    color: "#666",
+    color: "#D1E8FF",
     marginTop: 5,
   },
   Icon:{
@@ -291,13 +291,13 @@ const styles = StyleSheet.create({
   concludeText:{
     fontFamily: "Poppins",
     fontSize: 16,
-    color: "#666"
+    color: "#D1E8FF"
   },
   concludeIcon:{
     alignSelf: "center"
   },
   button: {
-    backgroundColor: "#4579EE",
+    backgroundColor: "#ff7d00",
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: 30,

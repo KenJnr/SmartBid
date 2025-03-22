@@ -10,7 +10,7 @@ export default function HomeScreen() {
   const router = useRouter()
   const {signOut} = useAuth()
   return (
-    <ScrollView>
+    <ScrollView style={styles.scroll}>
       <View style={styles.container}>
         <ExpoStatusBar style="auto" />
         {/* Top Section */}
@@ -113,9 +113,13 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  scroll:{
+    flexGrow: 1,
+    backgroundColor: "white"
+  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    
   },
   top: {
     backgroundColor: "#1E3A8A",
@@ -143,25 +147,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     marginBottom: 70
-  },
-  float: {
-    backgroundColor: "#4579EE",
-    padding: 15,
-    position: "absolute",
-    top: 220,
-    left: 20,
-    width: "90%",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 4,
-  },
-  floatText: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 5,
-    color: "#fff"
   },
   footer: {
     flex: 1,

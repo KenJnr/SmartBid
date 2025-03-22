@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert, KeyboardAvoidingView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import pubnub from "@/src/utils/pubnubConfig";
 import 'react-native-get-random-values';
@@ -38,7 +38,8 @@ export default function CreateBidScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView>
+      <View style={styles.container}>
       <Text style={styles.label}>Product Name:</Text>
       <TextInput
         style={styles.input}
@@ -64,6 +65,8 @@ export default function CreateBidScreen() {
 
       <Button title="Create Bid" onPress={createBid} />
     </View>
+    </KeyboardAvoidingView>
+    
   );
 }
 

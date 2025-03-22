@@ -12,78 +12,112 @@ export default function ProfileScreen() {
   const {signOut} = useAuth();
   return (
     <ScrollView contentContainerStyle={styles.container}>
-        <ExpoStatusBar style="dark" />
-      {/* Profile Header */}
-      <View style={styles.profileHeader}>
-        <Avatar.Image size={80} source={require("@/assets/images/me.jpg")} />
-        <Title style={styles.username}>ijforkuo</Title>
-        <Text style={styles.email}>ignatus373@email.com</Text>
-      </View>
-
-      {/* Profile Settings */}
-      <Card style={styles.card}>
-        <List.Item 
-        title="Edit Profile" 
-        left={() => <Ionicons name="person-circle-outline" size={24} color="#2196f3"/>} 
-        right={() => <AntDesign name="right" size={24} color="#999" />}
-        />
-        <Divider/>
-
-        <List.Item 
-        title="Change Password" 
-        left={() => <Ionicons name="key-outline" size={24} color="#2196f3"/>}
-        right={() => <AntDesign name="right" size={24} color="#999" />}
-        />
-        <Divider/>
-
-        <List.Item 
-        title="My Listings" 
-        left={() => <Ionicons name="albums-outline" size={24} color="#2196f3"/>}
-        right={() => <AntDesign name="right" size={24} color="#999" />} 
-        />
-        <Divider/>
-
-        <List.Item 
-        title="My Bids" 
-        left={() => <MaterialCommunityIcons name="gavel" size={24} color="#2196f3"/>}
-        right={() => <AntDesign name="right" size={24} color="#999" />} 
-        />
-        <Divider/>
-
-        <List.Item 
-        title="Wishlist" 
-        left={() => <Ionicons name="heart-outline" size={24} color="#2196f3"/>}
-        right={() => <AntDesign name="right" size={24} color="#999" />} 
-        />
-
-      </Card>
-
-      {/* Dark Mode Toggle */}
-      <Card style={styles.card}>
-        <View style={styles.themeCard}>
-            <View style={styles.themeCardLeft}>
-            <Ionicons name="moon-outline" size={24} />
-            <Title style={{fontSize: 16, color: "#333"}}>Dark Mode</Title>
-            </View>
-
-            <Switch value={darkMode} onValueChange={() => setDarkMode(!darkMode)} /> 
+        <ExpoStatusBar style="auto" />
+        {/* Top section */}
+        <View style={styles.top}>
+          {/* Profile Header */}
+          <View style={styles.profileHeader}>
+            <Avatar.Image size={80} source={require("@/assets/images/me.jpg")} />
+            <Title style={styles.username}>ijforkuo</Title>
+            <Text style={styles.email}>ignatus373@email.com</Text>
+          </View>
         </View>
-        
-      </Card>
+      
+        {/* Footer section */}
+        <View style={styles.footer}>
+            {/* Profile Settings */}
+            <Card style={styles.card}>
+              <List.Item 
+              title="Edit Profile" 
+              left={() => <Ionicons name="person-circle-outline" size={24} color="#2196f3"/>} 
+              right={() => <AntDesign name="right" size={24} color="#999" />}
+              />
+              <Divider/>
 
-      {/* Logout Button*/}
-      <TouchableOpacity style={styles.logoutButton} onPress={() => {signOut(); router.replace("/(auth)/login")}}>
-        <Text style={styles.buttonText}>LOGOUT</Text>
-      </TouchableOpacity>
+              <List.Item 
+              title="Change Password" 
+              left={() => <Ionicons name="key-outline" size={24} color="#2196f3"/>}
+              right={() => <AntDesign name="right" size={24} color="#999" />}
+              />
+              <Divider/>
+
+              <List.Item 
+              title="My Listings" 
+              left={() => <Ionicons name="albums-outline" size={24} color="#2196f3"/>}
+              right={() => <AntDesign name="right" size={24} color="#999" />} 
+              />
+              <Divider/>
+
+              <List.Item 
+              title="My Bids" 
+              left={() => <MaterialCommunityIcons name="gavel" size={24} color="#2196f3"/>}
+              right={() => <AntDesign name="right" size={24} color="#999" />} 
+              />
+              <Divider/>
+
+              <List.Item 
+              title="Wishlist" 
+              left={() => <Ionicons name="heart-outline" size={24} color="#2196f3"/>}
+              right={() => <AntDesign name="right" size={24} color="#999" />} 
+              />
+
+            </Card>
+
+            {/* Dark Mode Toggle */}
+            <Card style={styles.card}>
+              <View style={styles.themeCard}>
+                  <View style={styles.themeCardLeft}>
+                  <Ionicons name="moon-outline" size={24} />
+                  <Title style={{fontSize: 16, color: "#333"}}>Dark Mode</Title>
+                  </View>
+
+                  <Switch value={darkMode} onValueChange={() => setDarkMode(!darkMode)} /> 
+              </View>
+              
+            </Card>
+
+            {/* Logout Button*/}
+            <TouchableOpacity style={styles.logoutButton} onPress={() => {signOut(); router.replace("/(auth)/login")}}>
+              <Text style={styles.buttonText}>LOGOUT</Text>
+            </TouchableOpacity>
+        </View>
+      
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {flex:1, padding: 16,backgroundColor: "#fff" },
-  profileHeader: { alignItems: "center", marginBottom: 30, marginTop: 40},
-  username: { fontSize: 22, fontWeight: "bold", marginTop: 16, marginBottom: 8 },
-  email: { fontSize: 14, color: "gray" },
+  container: {flex:1, backgroundColor: "#fff" },
+  top: {
+    backgroundColor: "#1E3A8A",
+    padding: 20
+  },
+  profileHeader: { 
+    alignItems: "center", 
+    marginBottom: 50, 
+    marginTop: 40
+  },
+  username: { 
+    fontSize: 22, 
+    fontWeight: "bold", 
+    marginTop: 16, 
+    marginBottom: 4,
+    color: "#fff"
+  },
+  email: { 
+    fontSize: 14, 
+    color: "#ccc" 
+  },
+  footer: {
+    flex: 1,
+    backgroundColor: "white",
+    padding: 20,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    position: "absolute",
+    top: 250,
+    width: "100%",
+  },
   card: { marginBottom: 20, padding: 10, backgroundColor: "#fff" },
   themeCard: {
     flexDirection: "row",

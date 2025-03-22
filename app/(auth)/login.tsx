@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
         padding: 16,  
+        backgroundColor: "#fff"
     },
     backIcon:{
         marginTop: 20,
@@ -125,7 +126,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 12,
         padding: 16,
-        marginBottom: 16
+        marginBottom: 16,
+        backgroundColor: "#fafaff"
     },
     forget:{
         flexDirection: "row",

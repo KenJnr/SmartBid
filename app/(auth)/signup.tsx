@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity,  Ke
 import { AntDesign, Fontisto, MaterialIcons } from "@expo/vector-icons";
 import { useSignUp, useSignIn } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
+import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 
 export default function AuthScreen() {
   const [email, setEmail] = useState("");
@@ -83,8 +84,9 @@ export default function AuthScreen() {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scroll}>
     <View style={styles.container}>
+    <ExpoStatusBar style="dark" />
       {!pendingVerification ? (
         <>
 
@@ -116,7 +118,7 @@ export default function AuthScreen() {
           <Text style={styles.roleIntro}>I want to...</Text>
           <View style={styles.cardContainer}>
           <TouchableOpacity
-            style={styles.card}
+            style={[ styles.card, userType === "buyer" && styles.cardSelected ]}
             onPress={() => setUserType("buyer")}
           >
             <View  style={[styles.Icon, { backgroundColor: "#E9EFFC", borderRadius: 24, padding: 12 }]}>
@@ -127,7 +129,7 @@ export default function AuthScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.card}
+            style={[ styles.card, userType === "seller" && styles.cardSelected ]}
             onPress={() => setUserType("seller")}
           >
             <View style={[styles.Icon, { backgroundColor: "#E9EFFC", borderRadius: 24, padding: 12 }]}>
@@ -169,12 +171,15 @@ export default function AuthScreen() {
 }
 
 const styles = StyleSheet.create({
+  scroll:{
+    flexGrow: 1,
+    backgroundColor: "#fff"
+  },
   container:{
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
     padding: 20,
-    // backgroundColor: "white"
   },
   appName: {
     fontSize: 30,
@@ -204,7 +209,8 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 12,
     borderWidth: 1,
-    marginBottom: 16
+    marginBottom: 16,
+    backgroundColor: "#fafaff"
   },
   roleText: {
     width:"100%",
@@ -270,6 +276,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
+  },
+  cardSelected: { 
+    borderColor: "#4579EE",
+    borderWidth: 1 
   },
   conclude:{
     flexDirection: "row",

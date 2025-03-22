@@ -11,7 +11,13 @@ const Tab = createBottomTabNavigator();
 
 export default function BuyerDashboardLayout() {
     return (
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Navigator 
+      screenOptions={{ 
+        headerShown: false ,
+        tabBarStyle:{backgroundColor: "#001524", borderTopWidth: 0, elevation: 0,shadowOpacity: 0, height: 60},
+        tabBarActiveTintColor: "#FF7D00",
+        tabBarInactiveTintColor: "#999",
+        }}>
         <Tab.Screen
           name="home"
           component={HomeScreen}

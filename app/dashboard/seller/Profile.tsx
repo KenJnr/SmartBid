@@ -29,35 +29,40 @@ export default function ProfileScreen() {
             <Card style={styles.card}>
               <List.Item 
               title="Edit Profile" 
-              left={() => <Ionicons name="person-circle-outline" size={24} color="#2196f3"/>} 
+              titleStyle={styles.cardText}
+              left={() => <Ionicons name="person-circle-outline" size={24} color="#ff7d00"/>} 
               right={() => <AntDesign name="right" size={24} color="#999" />}
               />
-              <Divider/>
+              <Divider style={{ backgroundColor: "#3A5A73" }}/>
 
               <List.Item 
               title="Change Password" 
-              left={() => <Ionicons name="key-outline" size={24} color="#2196f3"/>}
+              titleStyle={styles.cardText}
+              left={() => <Ionicons name="key-outline" size={24} color="#ff7d00"/>}
               right={() => <AntDesign name="right" size={24} color="#999" />}
               />
-              <Divider/>
+              <Divider style={{ backgroundColor: "#3A5A73" }}/>
 
               <List.Item 
               title="My Listings" 
-              left={() => <Ionicons name="albums-outline" size={24} color="#2196f3"/>}
+              titleStyle={styles.cardText}
+              left={() => <Ionicons name="albums-outline" size={24} color="#ff7d00"/>}
               right={() => <AntDesign name="right" size={24} color="#999" />} 
               />
-              <Divider/>
+              <Divider style={{ backgroundColor: "#3A5A73" }}/>
 
               <List.Item 
-              title="My Bids" 
-              left={() => <MaterialCommunityIcons name="gavel" size={24} color="#2196f3"/>}
+              title="My Bids"
+              titleStyle={styles.cardText}
+              left={() => <MaterialCommunityIcons name="gavel" size={24} color="#ff7d00"/>}
               right={() => <AntDesign name="right" size={24} color="#999" />} 
               />
-              <Divider/>
+              <Divider style={{ backgroundColor: "#3A5A73" }}/>
 
               <List.Item 
               title="Wishlist" 
-              left={() => <Ionicons name="heart-outline" size={24} color="#2196f3"/>}
+              titleStyle={styles.cardText}
+              left={() => <Ionicons name="heart-outline" size={24} color="#ff7d00"/>}
               right={() => <AntDesign name="right" size={24} color="#999" />} 
               />
 
@@ -67,8 +72,8 @@ export default function ProfileScreen() {
             <Card style={styles.card}>
               <View style={styles.themeCard}>
                   <View style={styles.themeCardLeft}>
-                  <Ionicons name="moon-outline" size={24} />
-                  <Title style={{fontSize: 16, color: "#333"}}>Dark Mode</Title>
+                  <Ionicons name="moon-outline" size={24} color="#ff7d00" />
+                  <Title style={{fontSize: 16, color: "#fff"}}>Dark Mode</Title>
                   </View>
 
                   <Switch value={darkMode} onValueChange={() => setDarkMode(!darkMode)} /> 
@@ -87,9 +92,9 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {flex:1, backgroundColor: "#fff" },
+  container: {flex:1, backgroundColor: "#103957" },
   top: {
-    backgroundColor: "#1E3A8A",
+    backgroundColor: "#001524",
     padding: 20
   },
   profileHeader: { 
@@ -106,11 +111,11 @@ const styles = StyleSheet.create({
   },
   email: { 
     fontSize: 14, 
-    color: "#ccc" 
+    color: "#D1E8FF" 
   },
   footer: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#103957",
     padding: 20,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
@@ -118,7 +123,10 @@ const styles = StyleSheet.create({
     top: 250,
     width: "100%",
   },
-  card: { marginBottom: 20, padding: 10, backgroundColor: "#fff" },
+  card: { marginTop: 20,marginBottom: 20, padding: 10, backgroundColor: "#1B4B66", },
+  cardText:{
+    color: "#fff"
+  },
   themeCard: {
     flexDirection: "row",
     justifyContent: "space-between"
@@ -129,7 +137,7 @@ const styles = StyleSheet.create({
     gap: 12
   },
   logoutButton: { 
-    backgroundColor: "#4579EE",
+    backgroundColor: "#ff7d00",
         paddingVertical: 16,
         paddingHorizontal: 24,
         borderRadius: 30,

@@ -33,21 +33,21 @@ export default function HomeScreen() {
             <View style={styles.leftCards}>
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                  <Ionicons name="cloud-upload" size={24} color="#2196f3" />
+                  <Ionicons name="cloud-upload" size={24} color="#ff7d00" />
                   <Title style={styles.cardText}>Upload Image</Title>
                 </View>
               </Card>
 
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <Ionicons name="add-circle" size={24} color="#2196f3" />
+                <Ionicons name="add-circle" size={24} color="#ff7d00" />
                   <Title style={styles.cardText}>Create Listings</Title>
                 </View>
               </Card>
 
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <Ionicons name="list-circle" size={24} color="#2196f3" />
+                <Ionicons name="list-circle" size={24} color="#ff7d00" />
                   <Title style={styles.cardText}>Edit Listings</Title>
                 </View>
               </Card>
@@ -56,21 +56,21 @@ export default function HomeScreen() {
             <View style={styles.rightCards}>
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <FontAwesome5 name="users" size={24} color="#2196f3" />
+                <FontAwesome5 name="users" size={24} color="#ff7d00" />
                   <Title style={styles.cardText}>Followers</Title>
                 </View>
               </Card>
 
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <Octicons name="feed-heart" size={24} color="#2196f3" />
+                <Octicons name="feed-heart" size={24} color="#ff7d00" />
                   <Title style={styles.cardText}>View Requests</Title>
                 </View>
               </Card>
 
               <Card style={styles.card}>
                 <View style={styles.cardContent}>
-                <Ionicons name="wallet" size={24} color="#2196f3" />
+                <Ionicons name="wallet" size={24} color="#ff7d00" />
                   <Title style={styles.cardText}>Withdrawal</Title>
                 </View>
               </Card>
@@ -115,14 +115,13 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   scroll:{
     flexGrow: 1,
-    backgroundColor: "white"
+    backgroundColor: "#103957"
   },
   container: {
     flex: 1,
-    
   },
   top: {
-    backgroundColor: "#1E3A8A",
+    backgroundColor: "#001524",
     padding: 20,
     paddingVertical: 40,
   },
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontSize: 18,
-    color: "#ccc",
+    color: "#D1E8FF",
     marginTop: 15,
   },
   text2: {
@@ -150,7 +149,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#103957",
     padding: 20,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
@@ -159,15 +158,15 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   footerTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#4579EE"
+    color: "#FFFFFF"
   },
   cardContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 40
+    marginBottom: 20
   },
   leftCards: {
     width: "48%",
@@ -176,7 +175,7 @@ const styles = StyleSheet.create({
     width: "48%",
   },
   card: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#1B4B66",
     borderRadius: 10,
     marginBottom: 10,
     elevation: 3, // Android shadow
@@ -193,6 +192,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "#FFFFFF"
   },
   cardContent2:{
     flexDirection: "row",
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   cardText2: {
     fontSize: 12,
-    color: "#333",
+    color: "#D1E8FF",
     alignItems: "center"
   }
 });

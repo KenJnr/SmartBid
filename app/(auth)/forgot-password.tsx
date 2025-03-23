@@ -3,28 +3,30 @@ import {Ionicons, MaterialIcons} from '@expo/vector-icons';
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import { useTheme } from "@/src/context/ThemeContext";
 
 export default function Forgetpassword(){
+    const {theme} = useTheme()
 
     const router = useRouter()
     const [email, setEmail] = useState("")
     return(
-        <View style={styles.container}>
-            <ExpoStatusBar style="auto" />
+        <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
+            <ExpoStatusBar style={theme.mode === "dark" ? "auto" : "dark" } />
 
-            <TouchableOpacity style={styles.backIcon} onPress={() => router.back()}>
+            <TouchableOpacity style={[styles.backIcon, {backgroundColor: theme.colors.backIcon}]} onPress={() => router.back()}>
                 <Ionicons name="chevron-back" size={24} color="#333" />
             </TouchableOpacity>
             
-            <Text style={styles.heading}>Forget password</Text>
+            <Text style={[styles.heading, {color: theme.colors.text}]}>Forget password</Text>
 
-            <Text style={styles.intro}>Please, enter your email address. You will receive a link 
+            <Text style={[styles.intro, {color: theme.colors.cardSubTitle}]}>Please, enter your email address. You will receive a link 
             to create a new password via email.
             </Text>
 
-            <Text style={styles.label}>Email</Text>
+            <Text style={[styles.label, {color: theme.colors.text}]}>Email</Text>
             <TextInput
-                style={styles.textField}
+                style={[styles.textField, {backgroundColor: theme.colors.inputField}]}
                 placeholder="m@example.com"
                 value={email}
                 onChangeText={setEmail}
@@ -33,7 +35,7 @@ export default function Forgetpassword(){
             />
 
             <TouchableOpacity
-                style={styles.button}
+                style={[styles.button, {backgroundColor: theme.colors.primary}]}
                 onPress={() => router.push("/(auth)/login")}
             >
                 <Text style={styles.buttonText}>SEND</Text>
@@ -48,13 +50,11 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
         padding: 16,  
-        backgroundColor: "#103957"
     },
     backIcon:{
         marginTop: 20,
         alignSelf: "flex-start",
         marginBottom: 24,
-        backgroundColor: "#8d99ae",
         paddingHorizontal: 10,
         paddingVertical:10,
         borderRadius: 12
@@ -65,19 +65,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontFamily: "Poppins",
         marginBottom: 100,
-        color: "#fff"
     },
     intro:{
         fontSize: 16,
         lineHeight: 20,
-        color: "#D1E8FF",
         marginBottom: 20
     },
     label: {
         alignSelf: "flex-start",
         fontSize: 16,
         fontWeight: "bold",
-        color: "#fff",
         paddingBottom: 5
     },
     textField: {
@@ -87,10 +84,8 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         padding: 16,
         marginBottom: 60,
-        backgroundColor: "#d0cfcf"
     },
     button: {
-        backgroundColor: "#ff7d00",
         paddingVertical: 16,
         paddingHorizontal: 24,
         borderRadius: 30,

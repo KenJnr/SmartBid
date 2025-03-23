@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from "react-native";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import { useTheme } from "@/src/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -8,7 +9,7 @@ import { useSignIn, } from "@clerk/clerk-expo";
 
 
 export default function Signin() {
-
+    const {theme} = useTheme()
     const router = useRouter()
     const [email,setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -38,18 +39,18 @@ export default function Signin() {
       };
 
     return(
-        <View style={styles.container}>
-            <ExpoStatusBar style="auto" />
+        <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
+            <ExpoStatusBar style={theme.mode === "dark" ? "auto" : "dark" } />
             
-            <TouchableOpacity style={styles.backIcon} onPress={() => router.push("/(auth)/signup")}>
+            <TouchableOpacity style={[styles.backIcon, {backgroundColor: theme.colors.backIcon}]} onPress={() => router.push("/(auth)/signup")}>
                 <Ionicons name="chevron-back" size={24} color="#333" />
             </TouchableOpacity>
 
-            <Text style={styles.heading}>Welcome Back</Text>
+            <Text style={[styles.heading, {color: theme.colors.text}]}>Welcome Back</Text>
 
-            <Text style={styles.label}>Email</Text>
+            <Text style={[styles.label, {color: theme.colors.text}]}>Email</Text>
             <TextInput
-            style={styles.textField}
+            style={[styles.textField, {backgroundColor: theme.colors.inputField}]}
             placeholder="m@example.com"
             value={email}
             onChangeText={setEmail}
@@ -57,9 +58,9 @@ export default function Signin() {
             autoCapitalize="none"
             />
 
-            <Text style={styles.label}>Password</Text>
+            <Text style={[styles.label, {color: theme.colors.text}]}>Password</Text>
             <TextInput
-            style={styles.textField}
+            style={[styles.textField, {backgroundColor: theme.colors.inputField}]}
             placeholder="password"
             value={password}
             onChangeText={setPassword}
@@ -67,17 +68,17 @@ export default function Signin() {
             />
 
             <View style={styles.forget}>
-                <Text style={styles.forgetText}>Forgot your password?</Text>
+                <Text style={[styles.forgetText, {color: theme.colors.cardSubTitle}]}>Forgot your password?</Text>
                 <TouchableOpacity 
                     style={styles.forgetIcon}
                     onPress={() => router.push("/(auth)/forgot-password")} 
                 >
-                    <MaterialIcons name="arrow-right-alt" size={40} color="#4579EE" />
+                    <MaterialIcons name="arrow-right-alt" size={40} color="#ff7d00" />
                 </TouchableOpacity>
             </View>
 
             <TouchableOpacity
-                style={styles.button}
+                style={[styles.button, {backgroundColor: theme.colors.primary}]}
                 onPress={handleLogin}
             >
                 <Text style={styles.buttonText}>LOGIN</Text>
@@ -100,7 +101,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         alignSelf: "flex-start",
         marginBottom: 24,
-        backgroundColor: "#8d99ae",
         paddingHorizontal: 10,
         paddingVertical:10,
         borderRadius: 12
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         padding: 16,
         marginBottom: 16,
-        backgroundColor: "#d0cfcf"
+        // backgroundColor: "#d0cfcf"
     },
     forget:{
         flexDirection: "row",

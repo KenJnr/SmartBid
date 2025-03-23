@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity,  KeyboardAvoidingView, ScrollView } from "react-native";
+import { useTheme } from "@/src/context/ThemeContext";
 import { AntDesign, Fontisto, MaterialIcons } from "@expo/vector-icons";
 import { useSignUp, useSignIn } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 
 export default function AuthScreen() {
+  const {theme} = useTheme();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState<"seller" | "buyer">("buyer");
@@ -84,20 +87,20 @@ export default function AuthScreen() {
   };
 
   return (
-    <ScrollView style={styles.scroll}>
+    <ScrollView style={{backgroundColor: theme.colors.background, flexGrow: 1}}>
     <View style={styles.container}>
-    <ExpoStatusBar style="auto" />
+    <ExpoStatusBar style={theme.mode === "dark" ? "auto" : "dark" } />
       {!pendingVerification ? (
         <>
 
-          <Text style={styles.appName}>SmartBid</Text>
-          <Text style={styles.subtitle}>Welcome to SmartBid.
+          <Text style={[styles.appName, {color: theme.colors.text}]}>SmartBid</Text>
+          <Text style={[styles.subtitle, {color: theme.colors.cardSubTitle}]}>Welcome to SmartBid.
             Create your account and select a role to get started.
           </Text>
 
-          <Text style={styles.label}>Email:</Text>
+          <Text style={[styles.label, {color: theme.colors.text}]}>Email:</Text>
           <TextInput
-          style={styles.inputField} 
+          style={[styles.inputField, {backgroundColor: theme.colors.inputField}]} 
           value={email} 
           onChangeText={setEmail} 
           autoCapitalize="none" 
@@ -105,9 +108,9 @@ export default function AuthScreen() {
           keyboardType= "email-address"
           />
 
-          <Text style={styles.label}>Password:</Text>
+          <Text style={[styles.label, {color: theme.colors.text}]}>Password:</Text>
           <TextInput
-          style={styles.inputField} 
+          style={[styles.inputField, {backgroundColor: theme.colors.inputField}]} 
           value={password} 
           onChangeText={setPassword} 
           secureTextEntry 
@@ -115,40 +118,40 @@ export default function AuthScreen() {
           />
 
           <Text style={styles.roleText}>Please select whether you want to sell or buy products</Text>
-          <Text style={styles.roleIntro}>I want to...</Text>
+          <Text style={[styles.roleIntro, {color: theme.colors.text}]}>I want to...</Text>
           <View style={styles.cardContainer}>
           <TouchableOpacity
-            style={[ styles.card, userType === "buyer" && styles.cardSelected ]}
+            style={[ styles.card, {backgroundColor: theme.colors.card},userType === "buyer" && styles.cardSelected ]}
             onPress={() => setUserType("buyer")}
           >
-            <View  style={[styles.Icon, { backgroundColor: "#E9EFFC", borderRadius: 24, padding: 12 }]}>
-            <AntDesign name="shoppingcart" size={24} color="#4579EE" />
+            <View  style={[styles.Icon, { backgroundColor: theme.colors.iconBackground, borderRadius: 24, padding: 12 }]}>
+            <AntDesign name="shoppingcart" size={24} color="#ff7d00" />
             </View>
-            <Text style={styles.cardTitle}>Buy Products</Text>
-            <Text style={styles.cardText}>Bid on items and make purchases</Text>
+            <Text style={[styles.cardTitle, {color: theme.colors.text}]}>Buy Products</Text>
+            <Text style={[styles.cardText, {color: theme.colors.cardSubTitle}]}>Bid on items and make purchases</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[ styles.card, userType === "seller" && styles.cardSelected ]}
+            style={[ styles.card, {backgroundColor: theme.colors.card}, userType === "seller" && styles.cardSelected ]}
             onPress={() => setUserType("seller")}
           >
-            <View style={[styles.Icon, { backgroundColor: "#E9EFFC", borderRadius: 24, padding: 12 }]}>
-            <Fontisto name="shopping-store" size={24} color="#4579EE" />
+            <View style={[styles.Icon, { backgroundColor: theme.colors.iconBackground, borderRadius: 24, padding: 12 }]}>
+            <Fontisto name="shopping-store" size={24} color="#ff7d00" />
             </View>
-            <Text style={styles.cardTitle}>Sell Products</Text>
-            <Text style={styles.cardText}>List items and accept bids</Text>
+            <Text style={[styles.cardTitle, {color: theme.colors.text}]}>Sell Products</Text>
+            <Text style={[styles.cardText, {color: theme.colors.cardSubTitle}]}>List items and accept bids</Text>
           </TouchableOpacity>
           </View>
 
           <View style={styles.conclude}>
-            <Text style={styles.concludeText}>Already have an account?</Text>
+            <Text style={[styles.concludeText, {color: theme.colors.cardSubTitle}]}>Already have an account?</Text>
             <TouchableOpacity style={styles.concludeIcon} onPress={() => router.push("/(auth)/login")}>
-              <MaterialIcons name="arrow-right-alt" size={40} color="#4579EE" />
+              <MaterialIcons name="arrow-right-alt" size={40} color="#ff7d00" />
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity 
-          style={styles.button}
+          style={[styles.button, {backgroundColor: theme.colors.primary}]}
           onPress={handleSignup}
           >
             <Text style={styles.buttonText}>SIGN UP</Text>
@@ -171,10 +174,6 @@ export default function AuthScreen() {
 }
 
 const styles = StyleSheet.create({
-  scroll:{
-    flexGrow: 1,
-    backgroundColor: "#103957"
-  },
   container:{
     flex: 1,
     justifyContent: "flex-start",
@@ -185,21 +184,18 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: "Poppins",
     fontWeight: "bold",
-    color: "#fff",
     marginBottom: 12
   },
   subtitle: {
     fontSize: 16,
     fontFamily: "Poppins",
     textAlign: "center",
-    color: "#D1E8FF",
     marginBottom: 40
   },
   label:{
     fontSize: 16,
     fontFamily: "Poppins",
     fontWeight: "bold",
-    color: "#fff",
     alignSelf: "flex-start",
     paddingBottom: 5
   },
@@ -210,7 +206,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     marginBottom: 16,
-    backgroundColor: "#d0cfcf"
   },
   roleText: {
     width:"100%",
@@ -231,7 +226,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#fff"
   },
   cardContainer:{
     flexDirection: "row",
@@ -246,7 +240,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 12,
     alignItems: "center", // Ensures content is centered
-    justifyContent: "center",
+    alignContent: "center",
     width: 160,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -260,13 +254,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
     textAlign: "center",
-    color: "#fff"
   },
   cardText:{
     fontFamily: "Poppins",
     textAlign: "center",
     fontSize: 14,
-    color: "#D1E8FF",
     marginTop: 5,
   },
   Icon:{
@@ -278,8 +270,9 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   cardSelected: { 
-    borderColor: "#4579EE",
-    borderWidth: 1 
+    borderColor: "#ff7d00",
+    borderWidth: 1,
+    
   },
   conclude:{
     flexDirection: "row",

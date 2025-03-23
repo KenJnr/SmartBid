@@ -1,12 +1,15 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import * as React from "react";
+import { useTheme } from "@/src/context/ThemeContext";
 import { Avatar, Card, Title, } from "react-native-paper";
 import { AntDesign, FontAwesome5, FontAwesome6, Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
+import { darkTheme } from "@/src/utils/theme";
 
 export default function HomeScreen() {
+  const {theme} = useTheme();
   const router = useRouter()
   const {signOut} = useAuth()
   return (
@@ -14,78 +17,78 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <ExpoStatusBar style="auto" />
         {/* Top Section */}
-        <View style={styles.top}>
+        <View style={{ backgroundColor: theme.colors.secondary, padding: 20, paddingVertical: 40,}}>
           <View style={styles.avatarContainer}>
             <Avatar.Image size={50} source={require("@/assets/images/me.jpg")} />
             <Text style={styles.avatarText}>Seller</Text>
           </View>
 
-          <Text style={styles.text1}>Welcome Back,</Text>
+          <Text style={[styles.text1, {color: theme.colors.subTitle}]}>Welcome Back,</Text>
           <Text style={styles.text2}>ijforkuo</Text>
         </View>
 
         {/* Footer Section */}
-        <View style={styles.footer}>
-          <Text style={styles.footerTitle}>QUICK SETUP</Text>
+        <View style={[styles.footer, {backgroundColor: theme.colors.background}]}>
+          <Text style={[styles.footerTitle, {color: theme.colors.text}]}>QUICK SETUP</Text>
 
           {/* Cards Layout */}
           <View style={styles.cardContainer}>
             <View style={styles.leftCards}>
-              <Card style={styles.card}>
+              <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
                 <View style={styles.cardContent}>
                   <Ionicons name="cloud-upload" size={24} color="#ff7d00" />
-                  <Title style={styles.cardText}>Upload Image</Title>
+                  <Title style={[styles.cardText, {color: theme.colors.text}]}>Upload Image</Title>
                 </View>
               </Card>
 
-              <Card style={styles.card}>
+              <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
                 <View style={styles.cardContent}>
                 <Ionicons name="add-circle" size={24} color="#ff7d00" />
-                  <Title style={styles.cardText}>Create Listings</Title>
+                  <Title style={[styles.cardText, {color: theme.colors.text}]}>Create Listings</Title>
                 </View>
               </Card>
 
-              <Card style={styles.card}>
+              <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
                 <View style={styles.cardContent}>
                 <Ionicons name="list-circle" size={24} color="#ff7d00" />
-                  <Title style={styles.cardText}>Edit Listings</Title>
+                  <Title style={[styles.cardText, {color: theme.colors.text}]}>Edit Listings</Title>
                 </View>
               </Card>
             </View>
 
             <View style={styles.rightCards}>
-              <Card style={styles.card}>
+              <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
                 <View style={styles.cardContent}>
                 <FontAwesome5 name="users" size={24} color="#ff7d00" />
-                  <Title style={styles.cardText}>Followers</Title>
+                  <Title style={[styles.cardText, {color: theme.colors.text}]}>Followers</Title>
                 </View>
               </Card>
 
-              <Card style={styles.card}>
+              <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
                 <View style={styles.cardContent}>
                 <Octicons name="feed-heart" size={24} color="#ff7d00" />
-                  <Title style={styles.cardText}>View Requests</Title>
+                  <Title style={[styles.cardText, {color: theme.colors.text}]}>View Requests</Title>
                 </View>
               </Card>
 
-              <Card style={styles.card}>
+              <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
                 <View style={styles.cardContent}>
                 <Ionicons name="wallet" size={24} color="#ff7d00" />
-                  <Title style={styles.cardText}>Withdrawal</Title>
+                  <Title style={[styles.cardText, {color: theme.colors.text}]}>Withdrawal</Title>
                 </View>
               </Card>
             </View>
           </View>
 
-          <Text style={styles.footerTitle}>GET STARTED</Text>
+          <Text style={[styles.footerTitle, {color: theme.colors.text}]}>GET STARTED</Text>
 
-            <Card style={styles.card}>
+            <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
                 <View style={styles.cardContent2}>
                     <View style={styles.left}>
                     <MaterialCommunityIcons style={styles.Icon1} name="hand-heart" size={24} color="#fbb02d" />
                       <View style={{flexDirection: "column"}}>
-                        <Title style={styles.cardText}>Invite friends</Title>
-                        <Text style={styles.cardText2}>Sign up a friend</Text>
+                        <Title style={[styles.cardText, {color: theme.colors.text}]}>Invite friends</Title>
+                        <Text style={[styles.cardText2, {color: theme.colors.cardSubTitle}]}>Sign up a friend</Text>
                       </View>
                     </View>
 
@@ -93,13 +96,13 @@ export default function HomeScreen() {
                 </View>
             </Card>
 
-            <Card style={styles.card}>
+            <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
                 <View style={styles.cardContent2}>
                   <View style={styles.left}>
                     <Ionicons style={styles.Icon2} name="chatbubble-ellipses" size={24} color="#0077b6" />
                     <View style={{flexDirection: "column"}}>
-                      <Title style={styles.cardText}>DomiChat</Title>
-                      <Text style={styles.cardText2}>Chat with our AI Assistant</Text>
+                      <Title style={[styles.cardText, {color: theme.colors.text}]}>DomiChat</Title>
+                      <Text style={[styles.cardText2, {color: theme.colors.cardSubTitle}]}>Chat with our AI Assistant</Text>
                     </View>
                   </View>
 
@@ -120,11 +123,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  top: {
-    backgroundColor: "#001524",
-    padding: 20,
-    paddingVertical: 40,
-  },
   avatarContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -138,7 +136,6 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontSize: 18,
-    color: "#D1E8FF",
     marginTop: 15,
   },
   text2: {
@@ -149,7 +146,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 1,
-    backgroundColor: "#103957",
     padding: 20,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
@@ -161,7 +157,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#FFFFFF"
   },
   cardContainer: {
     flexDirection: "row",
@@ -175,7 +170,6 @@ const styles = StyleSheet.create({
     width: "48%",
   },
   card: {
-    backgroundColor: "#1B4B66",
     borderRadius: 10,
     marginBottom: 10,
     elevation: 3, // Android shadow
@@ -192,7 +186,6 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#FFFFFF"
   },
   cardContent2:{
     flexDirection: "row",
@@ -213,7 +206,6 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   Icon2: {
-    
     backgroundColor: "#caf0f8",
     paddingVertical: 16,
     paddingHorizontal: 16,
@@ -221,7 +213,6 @@ const styles = StyleSheet.create({
   },
   cardText2: {
     fontSize: 12,
-    color: "#D1E8FF",
     alignItems: "center"
   }
 });

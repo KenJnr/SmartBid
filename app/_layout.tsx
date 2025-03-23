@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/src/context/ThemeContext";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 import { Stack, Slot, useRouter, useSegments, useRootNavigationState } from "expo-router";
@@ -18,12 +19,15 @@ export default function Layout() {
   }
 
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
+    <ThemeProvider>
+        <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
       <AuthRedirect />
       <Stack screenOptions={{ headerShown: false }}>
         <Slot /> {/* Ensure the layout properly renders nested routes */}
       </Stack>
     </ClerkProvider>
+    </ThemeProvider>
+    
   );
 }
 

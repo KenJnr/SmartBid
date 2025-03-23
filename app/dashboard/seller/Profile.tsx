@@ -1,67 +1,69 @@
 import React from "react";
 import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { useTheme } from "@/src/context/ThemeContext";
 import { Avatar, Card, Title, Text, List, Switch, Button, Divider } from "react-native-paper";
 import { AntDesign, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import { darkTheme } from "@/src/utils/theme";
 
-export default function ProfileScreen() {
-  const [darkMode, setDarkMode] = React.useState(false);
+export default function ProfileScreen( ) {
+  const {theme, toggleTheme} = useTheme();
   const router = useRouter();
   const {signOut} = useAuth();
   return (
     <ScrollView contentContainerStyle={styles.container}>
         <ExpoStatusBar style="auto" />
         {/* Top section */}
-        <View style={styles.top}>
+        <View style={{ backgroundColor: theme.colors.secondary, padding: 20}}>
           {/* Profile Header */}
           <View style={styles.profileHeader}>
             <Avatar.Image size={80} source={require("@/assets/images/me.jpg")} />
-            <Title style={styles.username}>ijforkuo</Title>
-            <Text style={styles.email}>ignatus373@email.com</Text>
+            <Title style={[styles.username, {color: theme.colors.Title}]}>ijforkuo</Title>
+            <Text style={{color: theme.colors.subTitle, fontSize: 14}}>ignatus373@email.com</Text>
           </View>
         </View>
       
         {/* Footer section */}
-        <View style={styles.footer}>
+        <View style={[styles.footer, {backgroundColor: theme.colors.background}]}>
             {/* Profile Settings */}
-            <Card style={styles.card}>
+            <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
               <List.Item 
               title="Edit Profile" 
-              titleStyle={styles.cardText}
+              titleStyle={[styles.cardText, {color: theme.colors.text}]}
               left={() => <Ionicons name="person-circle-outline" size={24} color="#ff7d00"/>} 
               right={() => <AntDesign name="right" size={24} color="#999" />}
               />
-              <Divider style={{ backgroundColor: "#3A5A73" }}/>
+              <Divider style={{ backgroundColor: theme.colors.divider }}/>
 
               <List.Item 
               title="Change Password" 
-              titleStyle={styles.cardText}
+              titleStyle={[styles.cardText, {color: theme.colors.text}]}
               left={() => <Ionicons name="key-outline" size={24} color="#ff7d00"/>}
               right={() => <AntDesign name="right" size={24} color="#999" />}
               />
-              <Divider style={{ backgroundColor: "#3A5A73" }}/>
+              <Divider style={{ backgroundColor: theme.colors.divider }}/>
 
               <List.Item 
               title="My Listings" 
-              titleStyle={styles.cardText}
+              titleStyle={[styles.cardText, {color: theme.colors.text}]}
               left={() => <Ionicons name="albums-outline" size={24} color="#ff7d00"/>}
               right={() => <AntDesign name="right" size={24} color="#999" />} 
               />
-              <Divider style={{ backgroundColor: "#3A5A73" }}/>
+              <Divider style={{ backgroundColor: theme.colors.divider }}/>
 
               <List.Item 
               title="My Bids"
-              titleStyle={styles.cardText}
+              titleStyle={[styles.cardText, {color: theme.colors.text}]}
               left={() => <MaterialCommunityIcons name="gavel" size={24} color="#ff7d00"/>}
               right={() => <AntDesign name="right" size={24} color="#999" />} 
               />
-              <Divider style={{ backgroundColor: "#3A5A73" }}/>
+              <Divider style={{ backgroundColor: theme.colors.divider }}/>
 
               <List.Item 
               title="Wishlist" 
-              titleStyle={styles.cardText}
+              titleStyle={[styles.cardText, {color: theme.colors.text}]}
               left={() => <Ionicons name="heart-outline" size={24} color="#ff7d00"/>}
               right={() => <AntDesign name="right" size={24} color="#999" />} 
               />
@@ -69,20 +71,27 @@ export default function ProfileScreen() {
             </Card>
 
             {/* Dark Mode Toggle */}
-            <Card style={styles.card}>
+            <Card style={[styles.card, {backgroundColor: theme.colors.card}]}>
               <View style={styles.themeCard}>
                   <View style={styles.themeCardLeft}>
                   <Ionicons name="moon-outline" size={24} color="#ff7d00" />
-                  <Title style={{fontSize: 16, color: "#fff"}}>Dark Mode</Title>
+                  <Title style={{fontSize: 16, color: theme.colors.text}}>Dark Mode</Title>
                   </View>
 
-                  <Switch value={darkMode} onValueChange={() => setDarkMode(!darkMode)} /> 
+                  <Switch 
+                  value={theme === darkTheme} 
+                  onValueChange={toggleTheme}
+                  trackColor={{ false: "#ddd", true: "#444"}}
+                  thumbColor={theme === darkTheme ? "#fff" : "#000"}
+                  /> 
               </View>
               
             </Card>
 
             {/* Logout Button*/}
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {signOut(); router.replace("/(auth)/login")}}>
+            <TouchableOpacity 
+            style={[styles.logoutButton, {backgroundColor: theme.colors.primary,}]} 
+            onPress={() => {signOut(); router.replace("/(auth)/login")}}>
               <Text style={styles.buttonText}>LOGOUT</Text>
             </TouchableOpacity>
         </View>
@@ -93,10 +102,6 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   container: {flex:1, backgroundColor: "#103957" },
-  top: {
-    backgroundColor: "#001524",
-    padding: 20
-  },
   profileHeader: { 
     alignItems: "center", 
     marginBottom: 50, 
@@ -107,15 +112,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold", 
     marginTop: 16, 
     marginBottom: 4,
-    color: "#fff"
-  },
-  email: { 
-    fontSize: 14, 
-    color: "#D1E8FF" 
   },
   footer: {
     flex: 1,
-    backgroundColor: "#103957",
     padding: 20,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
     gap: 12
   },
   logoutButton: { 
-    backgroundColor: "#ff7d00",
+    
         paddingVertical: 16,
         paddingHorizontal: 24,
         borderRadius: 30,

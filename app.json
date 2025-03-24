@@ -23,7 +23,10 @@
       "favicon": "./assets/images/favicon.png"
     },
     "extra": {
-      "CLERK_PUBLISHABLE_KEY": "pk_test_ZHluYW1pYy1zd2FuLTU3LmNsZXJrLmFjY291bnRzLmRldiQ"
+      "CLERK_PUBLISHABLE_KEY": "pk_test_ZHluYW1pYy1zd2FuLTU3LmNsZXJrLmFjY291bnRzLmRldiQ",
+      "PUBNUB_PUBLISH_KEY": "pub-c-79b10296-7f38-4001-8f82-5e2fff66b5db",
+      "PUBNUB_SUBSCRIBE_KEY": "sub-c-243b0bbf-5ece-4fca-8003-fb01b52a2ab1",
+      "PUBNUB_UUID": "unique-user-id"
     },
     "plugins": [
       "expo-router",

@@ -23,7 +23,10 @@ export default function Layout() {
         <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
       <AuthRedirect />
       <Stack screenOptions={{ headerShown: false }}>
-        <Slot /> {/* Ensure the layout properly renders nested routes */}
+        {/* Define screens explicitly */}
+        <Stack.Screen name="index" />
+          <Stack.Screen name="(auth)/signup" />
+          <Stack.Screen name="dashboard/dashboard" />
       </Stack>
     </ClerkProvider>
     </ThemeProvider>

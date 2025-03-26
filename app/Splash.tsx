@@ -11,7 +11,7 @@ export default function SplashScreen() {
 
   useEffect(() => {
     const loadApp = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Splash delay
+      await new Promise((resolve) => setTimeout(resolve, 4000)); // Splash delay
 
       if (isLoaded) {
         setAppReady(true);
@@ -20,7 +20,7 @@ export default function SplashScreen() {
         if (isSignedIn) {
           router.replace("/dashboard/dashboard");
         } else {
-          router.replace("/(auth)/login"); // Always go to sign-in first
+          router.replace("/(auth)/signup"); // Always go to sign-in first
         }
       }
     };

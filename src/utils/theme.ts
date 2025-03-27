@@ -16,6 +16,7 @@ export const lightTheme = {
       backIcon: "#ddd", // back icon background
       iconBackground: "#FFEFD6",
       inputField: "#eee", // input field background
+      // bidBgColor: "#1282a2",
       border: "#E5E5E5",
       error: "#FF3B30",
       success: "#34C759",
@@ -56,6 +57,7 @@ export const lightTheme = {
       backIcon: "#8d99ae",
       iconBackground: "#FFEFD6",
       inputField: "#d0cfcf", // input field background
+      // bidBgColor:  "#103957",
       border: "#3A3A3C",
       error: "#FF453A",
       success: "#30D158",

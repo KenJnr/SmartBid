@@ -9,8 +9,8 @@ import { useSignIn } from "@clerk/clerk-expo";
 export default function ForgotPasswordScreen() {
     const { theme } = useTheme();
     const router = useRouter();
-    const { signIn } = useSignIn();
-
+    const { signIn, isLoaded: signInLoaded } = useSignIn();
+    
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -19,30 +19,48 @@ export default function ForgotPasswordScreen() {
             Alert.alert("Error", "Please enter your email.");
             return;
         }
-
+    
         if (!signIn) {
             Alert.alert("Error", "Authentication is not initialized. Please try again.");
             return;
         }
-
+    
         try {
             setLoading(true);
-            await signIn.create({
-                strategy: "reset_password_email_code",
+            // Create a new sign-in attempt
+            const signInAttempt = await signIn.create({
                 identifier: email,
             });
-
+    
+            // Ensure supportedFirstFactors exists and is not null
+            const firstFactors = signInAttempt?.supportedFirstFactors ?? [];
+            const emailFactor = firstFactors.find(
+                (factor) => factor.strategy === "reset_password_email_code"
+            );
+    
+            if (!emailFactor?.emailAddressId) {
+                throw new Error("Email verification method not available for this account.");
+            }
+    
+            // Prepare the first factor for password reset
+            await signInAttempt.prepareFirstFactor({
+                strategy: "reset_password_email_code",
+                emailAddressId: emailFactor.emailAddressId,
+            });
+    
             Alert.alert("Success", "A verification code has been sent to your email.");
             router.push({ pathname: "/(auth)/verify-code", params: { email } });
         } catch (error: any) {
-            Alert.alert("Error", error.errors ? error.errors[0]?.message : "Something went wrong.");
+            console.error("Error in handleSendCode:", error);
+            Alert.alert("Error", error.errors?.[0]?.message || "Something went wrong.");
         } finally {
             setLoading(false);
         }
     };
+    
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}> 
             <ExpoStatusBar style={theme.mode === "dark" ? "auto" : "dark"} />
 
             <TouchableOpacity style={[styles.backIcon, { backgroundColor: theme.colors.backIcon }]} onPress={() => router.back()}>
@@ -51,13 +69,13 @@ export default function ForgotPasswordScreen() {
 
             <Text style={[styles.heading, { color: theme.colors.text }]}>Forgot Password</Text>
 
-            <Text style={[styles.intro, { color: theme.colors.cardSubTitle }]}>
-            Enter your email address to receive a reset code. Use the code to securely reset your password and regain access to your account.
+            <Text style={[styles.intro, { color: theme.colors.cardSubTitle }]}> 
+                Enter your email address to receive a reset code. Use the code to securely reset your password.
             </Text>
 
             <Text style={[styles.label, { color: theme.colors.text }]}>Email</Text>
-            <TextInput
-                style={[styles.textField, { backgroundColor: theme.colors.inputField }]}
+            <TextInput 
+                style={[styles.textField, { backgroundColor: theme.colors.inputField }]} 
                 placeholder="m@example.com"
                 value={email}
                 onChangeText={setEmail}
@@ -65,9 +83,9 @@ export default function ForgotPasswordScreen() {
                 autoCapitalize="none"
             />
 
-            <TouchableOpacity
-                style={[styles.button, { backgroundColor: theme.colors.primary }]}
-                onPress={handleSendCode}
+            <TouchableOpacity 
+                style={[styles.button, { backgroundColor: theme.colors.primary }]} 
+                onPress={handleSendCode} 
                 disabled={loading}
             >
                 {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>SEND CODE</Text>}

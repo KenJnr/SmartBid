@@ -1,32 +1,63 @@
-import { Text,View, StyleSheet, TouchableOpacity, TextInput } from "react-native";
-import {Ionicons, MaterialIcons} from '@expo/vector-icons';
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Alert, ActivityIndicator } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTheme } from "@/src/context/ThemeContext";
+import { useSignIn } from "@clerk/clerk-expo";
 
-export default function Forgetpassword(){
-    const {theme} = useTheme()
+export default function ForgotPasswordScreen() {
+    const { theme } = useTheme();
+    const router = useRouter();
+    const { signIn } = useSignIn();
 
-    const router = useRouter()
-    const [email, setEmail] = useState("")
-    return(
-        <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
-            <ExpoStatusBar style={theme.mode === "dark" ? "auto" : "dark" } />
+    const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
 
-            <TouchableOpacity style={[styles.backIcon, {backgroundColor: theme.colors.backIcon}]} onPress={() => router.back()}>
+    const handleSendCode = async () => {
+        if (!email) {
+            Alert.alert("Error", "Please enter your email.");
+            return;
+        }
+
+        if (!signIn) {
+            Alert.alert("Error", "Authentication is not initialized. Please try again.");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            await signIn.create({
+                strategy: "reset_password_email_code",
+                identifier: email,
+            });
+
+            Alert.alert("Success", "A verification code has been sent to your email.");
+            router.push({ pathname: "/(auth)/verify-code", params: { email } });
+        } catch (error: any) {
+            Alert.alert("Error", error.errors ? error.errors[0]?.message : "Something went wrong.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            <ExpoStatusBar style={theme.mode === "dark" ? "auto" : "dark"} />
+
+            <TouchableOpacity style={[styles.backIcon, { backgroundColor: theme.colors.backIcon }]} onPress={() => router.back()}>
                 <Ionicons name="chevron-back" size={24} color="#333" />
             </TouchableOpacity>
-            
-            <Text style={[styles.heading, {color: theme.colors.text}]}>Forget password</Text>
 
-            <Text style={[styles.intro, {color: theme.colors.cardSubTitle}]}>Please, enter your email address. You will receive a link 
-            to create a new password via email.
+            <Text style={[styles.heading, { color: theme.colors.text }]}>Forgot Password</Text>
+
+            <Text style={[styles.intro, { color: theme.colors.cardSubTitle }]}>
+            Enter your email address to receive a reset code. Use the code to securely reset your password and regain access to your account.
             </Text>
 
-            <Text style={[styles.label, {color: theme.colors.text}]}>Email</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Email</Text>
             <TextInput
-                style={[styles.textField, {backgroundColor: theme.colors.inputField}]}
+                style={[styles.textField, { backgroundColor: theme.colors.inputField }]}
                 placeholder="m@example.com"
                 value={email}
                 onChangeText={setEmail}
@@ -35,47 +66,49 @@ export default function Forgetpassword(){
             />
 
             <TouchableOpacity
-                style={[styles.button, {backgroundColor: theme.colors.primary}]}
-                onPress={() => router.push("/(auth)/login")}
+                style={[styles.button, { backgroundColor: theme.colors.primary }]}
+                onPress={handleSendCode}
+                disabled={loading}
             >
-                <Text style={styles.buttonText}>SEND</Text>
+                {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>SEND CODE</Text>}
             </TouchableOpacity>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         justifyContent: "flex-start",
         alignItems: "center",
-        padding: 16,  
+        padding: 16,
     },
-    backIcon:{
+    backIcon: {
         marginTop: 20,
         alignSelf: "flex-start",
         marginBottom: 24,
         paddingHorizontal: 10,
-        paddingVertical:10,
-        borderRadius: 12
+        paddingVertical: 10,
+        borderRadius: 12,
     },
-    heading:{
+    heading: {
         alignSelf: "flex-start",
         fontSize: 30,
         fontWeight: "bold",
         fontFamily: "Poppins",
-        marginBottom: 100,
+        marginBottom: 50,
     },
-    intro:{
+    intro: {
         fontSize: 16,
         lineHeight: 20,
-        marginBottom: 20
+        marginBottom: 20,
+        textAlign: "center",
     },
     label: {
         alignSelf: "flex-start",
         fontSize: 16,
         fontWeight: "bold",
-        paddingBottom: 5
+        paddingBottom: 5,
     },
     textField: {
         width: "100%",
@@ -96,11 +129,11 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 4,
-        elevation: 5, // For Android shadow
-      },
-      buttonText: {
+        elevation: 5,
+    },
+    buttonText: {
         color: "white",
         fontSize: 18,
         fontWeight: "bold",
-      },
-})
+    },
+});

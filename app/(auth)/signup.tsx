@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity,  KeyboardAvoidingView, ScrollView } from "react-native";
+import React, { useRef, useState } from "react";
+import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity,  KeyboardAvoidingView, ScrollView, ActivityIndicator } from "react-native";
 import { useTheme } from "@/src/context/ThemeContext";
 import { AntDesign, Fontisto, MaterialIcons } from "@expo/vector-icons";
 import { useSignUp, useSignIn } from "@clerk/clerk-expo";
@@ -8,18 +8,39 @@ import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 
 export default function AuthScreen() {
   const {theme} = useTheme();
-
+  const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState<"seller" | "buyer">("buyer");
   const [pendingVerification, setPendingVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
+  const [otp, setOtp] = useState(new Array(6).fill(""));
+
+  const otpRefs = useRef<(TextInput | null)[]>([]);
 
   const { signUp, isLoaded: signUpLoaded, setActive } = useSignUp();
   const { signIn, isLoaded: signInLoaded } = useSignIn();
   const router = useRouter();
 
   if (!signUpLoaded || !signInLoaded) return <Text>Loading...</Text>;
+
+  const handleOtpChange = (value: string, index: number) => {
+    if (!/^[0-9]?$/.test(value)) return;
+    
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    if (value && index < otp.length - 1) {
+      otpRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyPress = (event: any, index: number) => {
+    if (event.nativeEvent.key === "Backspace" && !otp[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  };
 
   const handleSignup = async () => {
     if (!signUp) {
@@ -38,6 +59,7 @@ export default function AuthScreen() {
       setPendingVerification(true);
       Alert.alert("Check your email for the verification code!");
     } catch (error: any) {
+      setLoading(false); // Stop spinner if error occurs
       console.error("Signup Error:", error);
       Alert.alert(error.errors?.[0]?.message || "Signup failed. Try again.");
     }
@@ -48,7 +70,7 @@ export default function AuthScreen() {
     if (!signUp || !setActive) return;
     try {
       const completeSignUp = await signUp.attemptEmailAddressVerification({
-        code: verificationCode,
+        code: otp.join(""),
       });
 
       if (completeSignUp.status !== "complete") {
@@ -57,7 +79,6 @@ export default function AuthScreen() {
 
       await setActive({ session: completeSignUp.createdSessionId });
 
-      Alert.alert("Verification successful!");
       router.replace("/dashboard/dashboard");
     } catch (error: any) {
       console.error("Verification Error:", error);
@@ -159,13 +180,26 @@ export default function AuthScreen() {
         </>
       ) : (
         <>
-          <Text>Enter Verification Code:</Text>
-          <TextInput
-            value={verificationCode}
-            onChangeText={setVerificationCode}
-            keyboardType="number-pad"
-          />
-          <Button title="Verify Email" onPress={handleVerify} />
+          <Text style={[styles.heading, { color: theme.colors.text }]}>Enter Verification Code:</Text>
+          <View style={styles.otpContainer}>
+              {otp.map((digit, index) => (
+                <TextInput
+                  key={index}
+                  ref={(ref) => (otpRefs.current[index] = ref)}
+                  style={[styles.otpBox, { backgroundColor: theme.colors.inputField }]}
+                  value={digit}
+                  onChangeText={(value) => handleOtpChange(value, index)}
+                  onKeyPress={(event) => handleOtpKeyPress(event, index)}
+                  keyboardType="number-pad"
+                  maxLength={1}
+                  textAlign="center"
+                />
+              ))}
+            </View>
+          {/* <Button title="Verify Email" onPress={handleVerify} /> */}
+          <TouchableOpacity style={[styles.button, { backgroundColor: theme.colors.primary }]} onPress={handleVerify} disabled={loading}>
+            {loading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.buttonText}>Verify Email</Text>}
+          </TouchableOpacity>
         </>
       )}
     </View>
@@ -290,7 +324,6 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   button: {
-    backgroundColor: "#ff7d00",
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: 30,
@@ -307,5 +340,29 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  heading: {
+    alignSelf: "center",
+    fontSize: 30,
+    fontWeight: "bold",
+    fontFamily: "Poppins",
+    marginTop: 30,
+    marginBottom: 20
+    // color: "#fff",
+  },
+  otpContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 20,
+  },
+  otpBox: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    marginHorizontal: 5,
+    borderWidth: 1,
+    textAlign: "center",
   },
 })

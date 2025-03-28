@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity,  KeyboardAvoidingView, ScrollView, ActivityIndicator } from "react-native";
 import { useTheme } from "@/src/context/ThemeContext";
 import { AntDesign, Fontisto, MaterialIcons } from "@expo/vector-icons";
@@ -15,6 +15,10 @@ export default function AuthScreen() {
   const [pendingVerification, setPendingVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [otp, setOtp] = useState(new Array(6).fill(""));
+
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resendLoading, setResendLoading] = useState(false);
+
 
   const otpRefs = useRef<(TextInput | null)[]>([]);
 
@@ -83,6 +87,33 @@ export default function AuthScreen() {
     } catch (error: any) {
       console.error("Verification Error:", error);
       Alert.alert(error.errors?.[0]?.message || "Invalid code. Try again.");
+    }
+  };
+
+  useEffect(() => {
+    if (resendCooldown > 0) {
+      const timer = setInterval(() => {
+        setResendCooldown((prev) => Math.max(prev - 1, 0));
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [resendCooldown]);
+
+  if (!signUpLoaded || !signInLoaded) return <Text>Loading...</Text>;
+
+
+  const handleResendCode = async () => {
+    if (!signUp || resendCooldown > 0) return;
+    setResendLoading(true);
+    try {
+      await signUp.prepareEmailAddressVerification();
+      Alert.alert("A new verification code has been sent to your email.");
+      setResendCooldown(30); 
+    } catch (error: any) {
+      console.error("Resend Code Error:", error);
+      Alert.alert("Failed to resend code. Try again later.");
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -195,7 +226,15 @@ export default function AuthScreen() {
                   textAlign="center"
                 />
               ))}
+          </View>
+          
+          <View style={styles.conclude}>
+              <Text style={[styles.concludeText, { color: resendCooldown > 0 ? theme.colors.cardSubTitle : theme.colors.cardSubTitle }]}>Didn't receive a code? {resendCooldown > 0 ? `(${resendCooldown}s)` : ""} </Text>
+              <TouchableOpacity style={{alignSelf: "center"}} onPress={handleResendCode} disabled={resendCooldown > 0 || loading}>
+                <MaterialIcons name="arrow-right-alt" size={40} color={resendCooldown > 0 ? theme.colors.cardSubTitle : theme.colors.primary} />
+              </TouchableOpacity>
             </View>
+
           {/* <Button title="Verify Email" onPress={handleVerify} /> */}
           <TouchableOpacity style={[styles.button, { backgroundColor: theme.colors.primary }]} onPress={handleVerify} disabled={loading}>
             {loading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.buttonText}>Verify Email</Text>}

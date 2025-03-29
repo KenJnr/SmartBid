@@ -5,7 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useTheme } from "@/src/context/ThemeContext";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
-
+import * as FileSystem from "expo-file-system";
 
 interface BidEvent {
   id: string;
@@ -29,15 +29,25 @@ export default function BiddingScreen() {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
+      mediaTypes:["images"],
       allowsEditing: false,
       quality: 1,
     });
-
+  
     if (!result.canceled) {
-      setNewBid({ ...newBid, image: result.assets[0].uri });
+      const uri = result.assets[0].uri;
+      const fileName = uri.split("/").pop(); // Extract filename
+      const localUri = `${FileSystem.documentDirectory}${fileName}`;
+  
+      try {
+        await FileSystem.copyAsync({ from: uri, to: localUri }); // Save locally
+        setNewBid({ ...newBid, image: localUri }); // Store local path
+      } catch (error) {
+        console.error("Error saving image locally:", error);
+      }
     }
   };
+  
 
   const handleCreateBid = () => {
     if (!newBid.title || !newBid.startTime || !newBid.image || !newBid.startingPrice) {
@@ -188,11 +198,22 @@ function BidEventCard({ bid, onEdit, onDelete }: { bid: BidEvent; onEdit: (bid: 
         </View>
         
         <TouchableOpacity
-          style={styles.joinButton}
-          onPress={() => router.push({ pathname: "/bidding/[bidId]", params: { bidId: bid.id } })}
-        >
-          <Text style={styles.joinButtonText}>Join Event</Text>
-        </TouchableOpacity>
+  style={styles.joinButton}
+  onPress={() => {
+    router.push({
+      pathname: "/bidding/[bidId]",
+      params: { 
+        bidId: bid.id, 
+        title: bid.title,
+        image: encodeURIComponent(bid.image) // Local URI instead of base64
+      }
+    });
+  }}
+  
+>
+  <Text style={styles.joinButtonText}>Join Event</Text>
+</TouchableOpacity>
+
 
       </View>
     </View>
